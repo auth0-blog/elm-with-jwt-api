@@ -1,0 +1,18 @@
+{
+    "version": "1.0.0",
+    "summary": "Build an App in Elm with JWT Authentication and an API",
+    "repository": "https://github.com/auth0-blog/elm-with-jwt-api.git",
+    "license": "MIT",
+    "source-directories": [
+        "src",
+        "dist"
+    ],
+    "exposed-modules": [],
+    "dependencies": {
+        "elm-lang/core": "5.1.1 <= v < 6.0.0",
+        "elm-lang/html": "2.0.0 <= v < 3.0.0",
+        "elm-lang/http": "1.0.0 <= v < 2.0.0",
+        "rgrempel/elm-http-decorators": "2.0.0 <= v < 3.0.0"
+    },
+    "elm-version": "0.18.0 <= v < 0.19.0"
+}

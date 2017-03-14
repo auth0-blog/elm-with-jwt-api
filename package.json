@@ -1,0 +1,31 @@
+{
+  "name": "elm-app-jwt-api",
+  "version": "1.0.0",
+  "author": "Auth0",
+  "description": "Authenticating an Elm App with JWT",
+  "main": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/auth0-blog/elm-app-jwt-api.git"
+  },
+  "keywords": [
+    "elm"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/auth0-blog/elm-app-jwt-api/issues"
+  },
+  "scripts": {
+    "dev": "gulp",
+    "build": "gulp build"
+  },
+  "homepage": "https://github.com/auth0-blog/elm-app-jwt-api",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-connect": "^4.0.0",
+    "gulp-elm": "^0.6.1",
+    "gulp-plumber": "^1.1.0",
+    "gulp-util": "^3.0.7"
+  }
+}

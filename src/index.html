@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Chuck Norris Quoter</title>
+        <script src="Main.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    
+    <body>
+    </body>
+    
+    <script>
+        var storedState = localStorage.getItem('model');
+        var startingState = storedState ? JSON.parse(storedState) : null;
+        var elmApp = Elm.Main.fullscreen(startingState);
+
+        elmApp.ports.setStorage.subscribe(function(state) {
+            localStorage.setItem('model', JSON.stringify(state));
+        });
+
+        elmApp.ports.removeStorage.subscribe(function() {
+            localStorage.removeItem('model');
+        });
+    </script>
+</html>    
