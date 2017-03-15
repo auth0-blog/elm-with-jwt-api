@@ -67,6 +67,11 @@ registerUrl =
     api ++ "users"
 
 
+loginUrl : String
+loginUrl =
+    api ++ "sessions/create"
+
+
 
 -- GET a random quote (unauthenticated)
 
@@ -128,7 +133,7 @@ getTokenCompleted : Model -> Result Http.Error String -> ( Model, Cmd Msg )
 getTokenCompleted model result =
     case result of
         Ok newToken ->
-            ( { model | token = newToken, password = "", errorMsg = "" } |> Debug.log "got new token", Cmd.none )
+            ( { model | token = newToken, password = "", errorMsg = "" }, Cmd.none )
 
         Err error ->
             ( { model | errorMsg = (toString error) }, Cmd.none )
@@ -153,7 +158,9 @@ type Msg
     | SetUsername String
     | SetPassword String
     | ClickRegisterUser
+    | ClickLogIn
     | GetTokenCompleted (Result Http.Error String)
+    | LogOut
 
 
 -- Update
@@ -177,8 +184,14 @@ update msg model =
         ClickRegisterUser ->
             ( model, authUserCmd model registerUrl )
 
+        ClickLogIn ->
+            ( model, authUserCmd model loginUrl )
+
         GetTokenCompleted result ->
             getTokenCompleted model result
+
+        LogOut ->
+            ( { model | username = "", token = "" }, Cmd.none )
 
 
 {-
@@ -219,6 +232,9 @@ view model =
                     div [ id "greeting" ]
                         [ h3 [ class "text-center" ] [ text greeting ]
                         , p [ class "text-center" ] [ text "You have super-secret access to protected quotes." ]
+                        , p [ class "text-center" ]
+                            [ button [ class "btn btn-danger", onClick LogOut ] [ text "Log Out" ]
+                            ]
                         ]
                 else
                     div [ id "form" ]
@@ -239,8 +255,9 @@ view model =
                                 , input [ id "password", type_ "password", class "form-control", Html.Attributes.value model.password, onInput SetPassword ] []
                                 ]
                             ]
-                        , div [ class "text-center" ]
-                            [ button [ class "btn btn-link", onClick ClickRegisterUser ] [ text "Register" ]
+                        , div [ class "text-center" ] [
+                            button [ class "btn btn-primary", onClick ClickLogIn ] [ text "Log In" ]
+                            , button [ class "btn btn-link", onClick ClickRegisterUser ] [ text "Register" ]
                             ]
                         ]
     in
