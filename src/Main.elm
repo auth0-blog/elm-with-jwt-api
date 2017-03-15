@@ -101,6 +101,15 @@ fetchRandomQuoteCmd =
     Http.send FetchRandomQuoteCompleted fetchRandomQuote
 
 
+fetchRandomQuoteCompleted : Model -> Result Http.Error String -> ( Model, Cmd Msg )
+fetchRandomQuoteCompleted model result =
+    case result of
+        Ok newQuote ->
+            ( { model | quote = newQuote }, Cmd.none )
+
+        Err _ ->
+            ( model, Cmd.none ) 
+
 
 -- Encode user to construct POST request body (for Register and Log In)
 
@@ -142,6 +151,16 @@ tokenDecoder =
     Decode.field "id_token" Decode.string
 
 
+getTokenCompleted : Model -> Result Http.Error String -> ( Model, Cmd Msg )
+getTokenCompleted model result =
+    case result of
+        Ok newToken ->
+            setStorageHelper { model | token = newToken, password = "", errorMsg = "" }
+
+        Err error ->
+            ( { model | errorMsg = (toString error) }, Cmd.none )
+
+
 
 -- GET request for random protected quote (authenticated)
 
@@ -162,6 +181,16 @@ fetchProtectedQuote model =
 fetchProtectedQuoteCmd : Model -> Cmd Msg
 fetchProtectedQuoteCmd model =
     Http.send FetchProtectedQuoteCompleted (fetchProtectedQuote model)
+
+
+fetchProtectedQuoteCompleted : Model -> Result Http.Error String -> ( Model, Cmd Msg )
+fetchProtectedQuoteCompleted model result =
+    case result of
+        Ok newQuote ->
+            ( { model | protectedQuote = newQuote }, Cmd.none )
+
+        Err _ ->
+            ( model, Cmd.none )   
 
 
 
@@ -253,35 +282,6 @@ update msg model =
 
         LogOut ->
             ( { model | username = "", protectedQuote = "", token = "" }, removeStorage model )
-
-
-fetchRandomQuoteCompleted : Model -> Result Http.Error String -> ( Model, Cmd Msg )
-fetchRandomQuoteCompleted model result =
-    case result of
-        Ok newQuote ->
-            ( { model | quote = newQuote }, Cmd.none )
-
-        Err _ ->
-            ( model, Cmd.none )
-
-fetchProtectedQuoteCompleted : Model -> Result Http.Error String -> ( Model, Cmd Msg )
-fetchProtectedQuoteCompleted model result =
-    case result of
-        Ok newQuote ->
-            ( { model | protectedQuote = newQuote }, Cmd.none )
-
-        Err _ ->
-            ( model, Cmd.none )
-
-
-getTokenCompleted : Model -> Result Http.Error String -> ( Model, Cmd Msg )
-getTokenCompleted model result =
-    case result of
-        Ok newToken ->
-            setStorageHelper { model | token = newToken, password = "", errorMsg = "" }
-
-        Err error ->
-            ( { model | errorMsg = (toString error) }, Cmd.none )
 
 
 
