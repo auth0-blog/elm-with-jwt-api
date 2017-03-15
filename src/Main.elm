@@ -183,6 +183,7 @@ update msg model =
 
 {-
    VIEW
+   * Hide sections of view depending on authenticaton state of model
    * Get a quote
    * Register
 -}
