@@ -105,7 +105,7 @@ fetchRandomQuoteCompleted : Model -> Result Http.Error String -> ( Model, Cmd Ms
 fetchRandomQuoteCompleted model result =
     case result of
         Ok newQuote ->
-            ( { model | quote = newQuote }, Cmd.none )
+            setStorageHelper { model | quote = newQuote }
 
         Err _ ->
             ( model, Cmd.none ) 
@@ -186,8 +186,8 @@ fetchProtectedQuoteCmd model =
 fetchProtectedQuoteCompleted : Model -> Result Http.Error String -> ( Model, Cmd Msg )
 fetchProtectedQuoteCompleted model result =
     case result of
-        Ok newQuote ->
-            ( { model | protectedQuote = newQuote }, Cmd.none )
+        Ok newPQuote ->
+            setStorageHelper { model | protectedQuote = newPQuote }
 
         Err _ ->
             ( model, Cmd.none )   
@@ -217,7 +217,6 @@ setStorageHelper model =
 
 type Msg
     = GetQuote
-    | FetchRandomQuoteSuccess String
     | FetchRandomQuoteCompleted (Result Http.Error String)
     | SetUsername String
     | SetPassword String
@@ -225,7 +224,6 @@ type Msg
     | ClickLogIn
     | GetTokenCompleted (Result Http.Error String)
     | GetProtectedQuote
-    | FetchProtectedQuoteSuccess String
     | FetchProtectedQuoteCompleted (Result Http.Error String)
     | LogOut
 
@@ -250,9 +248,6 @@ update msg model =
         GetQuote ->
             ( model, fetchRandomQuoteCmd )
 
-        FetchRandomQuoteSuccess newQuote ->
-            setStorageHelper { model | quote = newQuote }
-
         FetchRandomQuoteCompleted result ->
             fetchRandomQuoteCompleted model result
 
@@ -273,9 +268,6 @@ update msg model =
 
         GetProtectedQuote ->
             ( model, fetchProtectedQuoteCmd model )
-
-        FetchProtectedQuoteSuccess newPQuote ->
-            setStorageHelper { model | protectedQuote = newPQuote }
 
         FetchProtectedQuoteCompleted result ->
             fetchProtectedQuoteCompleted model result
