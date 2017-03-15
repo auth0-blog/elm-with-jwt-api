@@ -142,14 +142,6 @@ authUserCmd model apiUrl =
 
 
 
--- Decode POST response to get token
-
-
-tokenDecoder : Decoder String
-tokenDecoder =
-    Decode.field "id_token" Decode.string
-
-
 getTokenCompleted : Model -> Result Http.Error String -> ( Model, Cmd Msg )
 getTokenCompleted model result =
     case result of
@@ -158,6 +150,15 @@ getTokenCompleted model result =
 
         Err error ->
             ( { model | errorMsg = (toString error) }, Cmd.none )
+
+
+
+-- Decode POST response to get token
+
+
+tokenDecoder : Decoder String
+tokenDecoder =
+    Decode.field "id_token" Decode.string
 
 
 
@@ -190,15 +191,6 @@ fetchProtectedQuoteCompleted model result =
 
         Err _ ->
             ( model, Cmd.none )   
-
-
-
--- Extract GET plain text response to get protected quote
-
-
-responseText : Http.Response String -> String
-responseText response =
-    response.body
 
 
 
