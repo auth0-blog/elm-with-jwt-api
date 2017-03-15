@@ -124,15 +124,6 @@ authUserCmd model apiUrl =
     Http.send GetTokenCompleted (authUser model apiUrl)
 
 
-
--- Decode POST response to get token
-
-
-tokenDecoder : Decoder String
-tokenDecoder =
-    Decode.field "id_token" Decode.string
-
-
 getTokenCompleted : Model -> Result Http.Error String -> ( Model, Cmd Msg )
 getTokenCompleted model result =
     case result of
@@ -141,6 +132,15 @@ getTokenCompleted model result =
 
         Err error ->
             ( { model | errorMsg = (toString error) }, Cmd.none )
+
+
+
+-- Decode POST response to get token
+
+
+tokenDecoder : Decoder String
+tokenDecoder =
+    Decode.field "id_token" Decode.string
 
 
 
