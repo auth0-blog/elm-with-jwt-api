@@ -84,7 +84,6 @@ fetchRandomQuoteCompleted model result =
 
 type Msg
     = GetQuote
-    | FetchRandomQuoteSuccess String
     | FetchRandomQuoteCompleted (Result Http.Error String)
 
 
@@ -96,9 +95,6 @@ update msg model =
     case msg of
         GetQuote ->
             ( model, fetchRandomQuoteCmd )
-
-        FetchRandomQuoteSuccess newQuote ->
-            ( { model | quote = newQuote }, Cmd.none )
 
         FetchRandomQuoteCompleted result ->
             fetchRandomQuoteCompleted model result
