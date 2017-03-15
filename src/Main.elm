@@ -179,8 +179,8 @@ fetchProtectedQuoteCmd model =
 fetchProtectedQuoteCompleted : Model -> Result Http.Error String -> ( Model, Cmd Msg )
 fetchProtectedQuoteCompleted model result =
     case result of
-        Ok newQuote ->
-            ( { model | protectedQuote = newQuote }, Cmd.none )
+        Ok newPQuote ->
+            ( { model | protectedQuote = newPQuote }, Cmd.none )
 
         Err _ ->
             ( model, Cmd.none )
