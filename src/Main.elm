@@ -189,7 +189,7 @@ setStorageHelper model =
 type Msg
     = GetQuote
     | FetchRandomQuoteSuccess String
-    | FetchProtectedQuoteCompleted (Result Http.Error String)
+    | FetchRandomQuoteCompleted (Result Http.Error String)
     | SetUsername String
     | SetPassword String
     | ClickRegisterUser
@@ -197,7 +197,7 @@ type Msg
     | GetTokenCompleted (Result Http.Error String)
     | GetProtectedQuote
     | FetchProtectedQuoteSuccess String
-    | FetchRandomQuoteCompleted (Result Http.Error String)
+    | FetchProtectedQuoteCompleted (Result Http.Error String)
     | LogOut
 
 
