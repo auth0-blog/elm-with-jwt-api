@@ -3,7 +3,6 @@ port module Main exposing (..)
 import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (..)
-import String
 import Http
 import Json.Decode as Decode exposing (..)
 import Json.Encode as Encode exposing (..)
