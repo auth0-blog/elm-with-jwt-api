@@ -8,9 +8,9 @@ import Json.Decode as Decode exposing (..)
 import Json.Encode as Encode exposing (..)
 
 
-main : Program Never Model Msg
+main : Program (Maybe Model) Model Msg
 main =
-    Html.program
+    Html.programWithFlags
         { init = init
         , update = update
         , subscriptions = \_ -> Sub.none
@@ -35,9 +35,14 @@ type alias Model =
     , errorMsg : String
     }
     
-init : (Model, Cmd Msg)
-init =
-    ( Model "" "" "" "" "" "", fetchRandomQuoteCmd )
+init : Maybe Model -> ( Model, Cmd Msg )
+init model =
+    case model of
+        Just model ->
+            ( model, fetchRandomQuoteCmd )
+
+        Nothing ->
+            ( Model "" "" "" "" "" "", fetchRandomQuoteCmd )
 
 
 
@@ -48,6 +53,7 @@ init =
    * Encode request body
    * Decode responses
    * Messages
+   * Ports
    * Update case
 -}
 -- API request URLs
@@ -96,7 +102,7 @@ fetchRandomQuoteCompleted : Model -> Result Http.Error String -> ( Model, Cmd Ms
 fetchRandomQuoteCompleted model result =
     case result of
         Ok newQuote ->
-            ( { model | quote = newQuote }, Cmd.none )
+            setStorageHelper { model | quote = newQuote }
 
         Err _ ->
             ( model, Cmd.none )    
@@ -139,7 +145,7 @@ getTokenCompleted : Model -> Result Http.Error String -> ( Model, Cmd Msg )
 getTokenCompleted model result =
     case result of
         Ok newToken ->
-            ( { model | token = newToken, password = "", errorMsg = "" }, Cmd.none )
+            setStorageHelper { model | token = newToken, password = "", errorMsg = "" }
 
         Err error ->
             ( { model | errorMsg = (toString error) }, Cmd.none )
@@ -179,11 +185,20 @@ fetchProtectedQuoteCmd model =
 fetchProtectedQuoteCompleted : Model -> Result Http.Error String -> ( Model, Cmd Msg )
 fetchProtectedQuoteCompleted model result =
     case result of
-        Ok newQuote ->
-            ( { model | protectedQuote = newQuote }, Cmd.none )
+        Ok newPQuote ->
+            setStorageHelper { model | protectedQuote = newPQuote }
 
         Err _ ->
             ( model, Cmd.none )
+
+
+
+-- Helper to update model and set localStorage with the updated model
+
+
+setStorageHelper : Model -> ( Model, Cmd Msg )
+setStorageHelper model =
+    ( model, setStorage model )
 
 
 
@@ -201,6 +216,16 @@ type Msg
     | GetProtectedQuote
     | FetchProtectedQuoteCompleted (Result Http.Error String)
     | LogOut
+
+
+-- Ports
+
+
+port setStorage : Model -> Cmd msg
+
+
+port removeStorage : Model -> Cmd msg
+
 
 
 -- Update
@@ -237,7 +262,7 @@ update msg model =
             fetchProtectedQuoteCompleted model result    
 
         LogOut ->
-            ( { model | username = "", token = "" }, Cmd.none )
+            ( { model | username = "", token = "" }, removeStorage model )
 
 
 {-
