@@ -52,10 +52,7 @@ update msg model =
 
 {-
    VIEW
-   * Hide sections of view depending on authenticaton state of model
    * Get a quote
-   * Log In or Register
-   * Get a protected quote
 -}
 
 
