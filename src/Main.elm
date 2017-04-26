@@ -61,7 +61,7 @@ init model =
 
 api : String
 api =
-    "http://localhost:3001/"
+    "http://localhost:3002/"
 
 
 randomQuoteUrl : String
@@ -152,12 +152,12 @@ getTokenCompleted model result =
 
 
 
--- Decode POST response to get token
+-- Decode POST response to get access token
 
 
 tokenDecoder : Decoder String
 tokenDecoder =
-    Decode.field "id_token" Decode.string
+    Decode.field "access_token" Decode.string
 
 
 
