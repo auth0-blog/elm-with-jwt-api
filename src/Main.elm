@@ -54,7 +54,7 @@ init =
 
 api : String
 api =
-    "http://localhost:3001/"
+    "http://localhost:3002/"
 
 
 randomQuoteUrl : String
