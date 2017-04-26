@@ -140,12 +140,12 @@ getTokenCompleted model result =
 
 
 
--- Decode POST response to get token
+-- Decode POST response to get access token
 
 
 tokenDecoder : Decoder String
 tokenDecoder =
-    Decode.field "id_token" Decode.string
+    Decode.field "access_token" Decode.string
 
 
 
